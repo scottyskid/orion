@@ -1,17 +1,26 @@
 
-# Welcome to your CDK Python project!
+# Pocket Masters
 
-You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`pocket_masters_stack`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+This is a project with two functions for me
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+1. To test and learn how to build and configure aws resources
+2. To build some interesting functionality
 
-This project is set up like a standard Python project.  The initialization process also creates
-a virtualenv within this project, stored under the .venv directory.  To create the virtualenv
-it assumes that there is a `python3` executable in your path with access to the `venv` package.
-If for any reason the automatic creation of the virtualenv fails, you can create the virtualenv
-manually once the init process completes.
+This is a project built using AWS CDK using python. For more information on AWS CDK see [here](https://docs.aws.amazon.com/cdk/v2/guide/home.html) 
 
+## Dependancies
+
+Below is a list of dependencies that are required to be on your local machine to be able to work with the project
+
+- python3
+- cdk
+
+This list are dependencies are 
+
+- docker
+- sam cli
+
+## Getting Started
 To manually create a virtualenv on MacOS and Linux:
 
 ```
@@ -37,24 +46,23 @@ Once the virtualenv is activated, you can install the required dependencies.
 $ pip install -r requirements.txt
 ```
 
-At this point you can now synthesize the CloudFormation template for this code.
+You can then install the dev dependencies.
+```
+$ pip install -r requirements-dev.txt
+```
 
-```
-$ cdk synth
-```
-
-You can now begin exploring the source code, contained in the hello directory.
-There is also a very trivial test included that can be run like this:
-
-```
-$ pytest
-```
 
 To add additional dependencies, for example other CDK libraries, just add to
 your requirements.txt file and rerun the `pip install -r requirements.txt`
 command.
 
-## Useful commands
+
+
+## Development
+
+The `cdk.json` file tells the CDK Toolkit how to execute your app.
+
+### Useful commands
 
  * `cdk ls`          list all stacks in the app
  * `cdk synth`       emits the synthesized CloudFormation template
@@ -62,4 +70,23 @@ command.
  * `cdk diff`        compare deployed stack with current state
  * `cdk docs`        open CDK documentation
 
-Enjoy!
+## Testing Locally
+
+
+
+### Unit tests
+There is also a very trivial test included that can be run like this:
+
+```
+$ pytest
+```
+
+### Testing Serverless Locally
+
+
+## Deploying Changes
+You can now synthesize the CloudFormation template for this code.
+
+```
+$ cdk synth
+```
