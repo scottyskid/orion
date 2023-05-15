@@ -12,13 +12,12 @@ This is a project built using AWS CDK using python. For more information on AWS 
 
 Below is a list of dependencies that are required to be on your local machine to be able to work with the project
 
-- python3
-- cdk
+- python3 `python3 --version`
+- cdk `cdk --version`
 
 This list are dependencies are 
 
-- docker
-- sam cli
+- [sam cli](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html) `sam --version`
 
 ## Getting Started
 To manually create a virtualenv on MacOS and Linux:
@@ -83,6 +82,29 @@ $ pytest
 
 ### Testing Serverless Locally
 
+SAM cli can be used to test serverless applications that have been built using cdk, for further infromation see [here](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk-testing.html)
+
+
+To start run
+```
+cdk synth
+```
+
+Then usage for sam is as below 
+```
+# Invoke the function FUNCTION_IDENTIFIER declared in the stack STACK_NAME
+sam local invoke -t ./cdk.out/pocket-masters-api.template.json ApiMethodFunction
+
+# Start all APIs declared in the AWS CDK application
+sam local start-api -t ./cdk.out/pocket-masters-api.template.json [OPTIONS]
+
+# Start a local endpoint that emulates AWS Lambda
+sam local start-lambda -t ./cdk.out/CdkSamExampleStack.template.json [OPTIONS]
+```
+
+```
+sam build -t ./cdk.out/pocket-masters-api.template.json
+```
 
 ## Deploying Changes
 You can now synthesize the CloudFormation template for this code.

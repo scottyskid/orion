@@ -22,7 +22,7 @@ class PocketMastersApiStack(Stack):
         root_method = lambda_.Function(self, "ApiMethodFunction",
             code=lambda_.Code.from_asset(path.join("lambdas", "api")),
             handler="root.lambda_handler",
-            runtime=lambda_.Runtime.PYTHON_3_9
+            runtime=lambda_.Runtime.PYTHON_3_10
         )
         
         api.root.add_method("GET", apigateway.LambdaIntegration(root_method))
