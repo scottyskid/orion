@@ -1,6 +1,6 @@
 import aws_cdk as core
 import aws_cdk.assertions as assertions
-from pocket_masters.pocket_masters_stack import PocketMastersStack
+from pocket_masters.pocket_masters_api_stack import PocketMastersStack
 
 
 def test_sqs_queue_created():
