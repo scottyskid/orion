@@ -7,7 +7,7 @@ from aws_cdk import (
 
 from orion.orion_api_stack import OrionApiStack
 
-class OrionApiStage(Stage):
+class OrionAppStage(Stage):
     """Stage containing all stacks for the api app
 
     Args:
@@ -17,7 +17,7 @@ class OrionApiStage(Stage):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        api = OrionApiStack(self, "orion-api")
+        api = OrionApiStack(self, "OrionApp")
 
 
 

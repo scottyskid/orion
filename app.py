@@ -13,7 +13,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = cdk.App()
 
-OrionDevopsBootstrapStack(app, "orion-devops-bootstrap")
-OrionApiStage(app, "orion-api-stage")
+OrionDevopsBootstrapStack(app, "OrionDeploymentPipeline")
+OrionAppStage(app, "OrionApp")
 
 app.synth()

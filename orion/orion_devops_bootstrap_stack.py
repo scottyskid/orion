@@ -8,7 +8,7 @@ from aws_cdk import (
 from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
 from aws_cdk.aws_codestarconnections import CfnConnection
 
-from orion.orion_api_stage import OrionApiStage
+from orion.orion_api_stage import OrionAppStage
 
 
 class OrionDevopsBootstrapStack(Stack):
@@ -21,9 +21,9 @@ class OrionDevopsBootstrapStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        connection = CfnConnection(self, "orion-github-connection", connection_name="orion-github-connection", provider_type="GitHub")
+        connection = CfnConnection(self, "RepoConnection", connection_name="OrionRepoConnection", provider_type="GitHub")
 
-        pipeline =  CodePipeline(self, "OrionCdkPipeline",
+        pipeline =  CodePipeline(self, "CdkPipeline",
                         pipeline_name="OrionCdkPipeline",
                         synth=ShellStep("Synth",
                             input=CodePipelineSource.connection("scottyskid/orion", "main", connection_arn=connection.attr_connection_arn),
@@ -33,4 +33,4 @@ class OrionDevopsBootstrapStack(Stack):
                         )
                     )
         
-        pipeline.add_stage(OrionApiStage(self, "orion-api-stage"))
+        pipeline.add_stage(OrionAppStage(self, "OrionApp"))
