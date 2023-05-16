@@ -1,5 +1,5 @@
 
-# Pocket Masters
+# Project Orion
 
 This is a project with two functions for me
 
@@ -93,17 +93,14 @@ cdk synth
 Then usage for sam is as below 
 ```
 # Invoke the function FUNCTION_IDENTIFIER declared in the stack STACK_NAME
-sam local invoke -t ./cdk.out/pocket-masters-api.template.json ApiMethodFunction
+sam local invoke -t ./cdk.out/orion-api.template.json ApiMethodFunction
 
 # Start all APIs declared in the AWS CDK application
-sam local start-api -t ./cdk.out/pocket-masters-api.template.json [OPTIONS]
-
-# Start a local endpoint that emulates AWS Lambda
-sam local start-lambda -t ./cdk.out/CdkSamExampleStack.template.json [OPTIONS]
+sam local start-api -t ./cdk.out/orion-api.template.json [OPTIONS]
 ```
 
 ```
-sam build -t ./cdk.out/pocket-masters-api.template.json
+sam build -t ./cdk.out/orion-api.template.json
 ```
 
 ## Deploying Changes

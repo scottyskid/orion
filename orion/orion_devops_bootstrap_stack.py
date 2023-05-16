@@ -5,7 +5,7 @@ from aws_cdk import (
     Stack,
     aws_codecommit as codecommit,
 )
-class DevopsBootstrapStack(Stack):
+class OrionDevopsBootstrapStack(Stack):
     """Stack for deploying Code* pipelines to an AWS Account
 
     Args:
@@ -15,5 +15,5 @@ class DevopsBootstrapStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        codecommit.Repository(self, "PocketMastersRepo", repository_name="PocketMastersRepo")
+        codecommit.Repository(self, "OrionRepo", repository_name="OrionRepo")
 

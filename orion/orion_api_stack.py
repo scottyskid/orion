@@ -10,14 +10,14 @@ from aws_cdk import (
 )
 
 
-class PocketMastersApiStack(Stack):
+class OrionApiStack(Stack):
     """Core API Stack
     """
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        api = apigateway.RestApi(self, "PocketMastersApi", rest_api_name="PocketMastersApi")
+        api = apigateway.RestApi(self, "OrionApi", rest_api_name="OrionApi")
 
         root_method = lambda_.Function(self, "ApiMethodFunction",
             code=lambda_.Code.from_asset(path.join("lambdas", "api")),
