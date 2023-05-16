@@ -114,8 +114,21 @@ sam build -t ./cdk.out/orion-api.template.json
 ```
 
 ## Deploying Changes
-You can now synthesize the CloudFormation template for this code.
+### Locally
+You can now synthesize the CloudFormation template for this code. This will check that your code compiles
 
 ```
 $ cdk synth
 ```
+
+To deploy a from your local repo you can deploy any stage with
+```
+cdk deploy '<StageId>/*'
+```
+
+### Remotely
+There is a CodePipeline that is created witht this deployment that will deploy all changes when pushed to main
+
+
+
+

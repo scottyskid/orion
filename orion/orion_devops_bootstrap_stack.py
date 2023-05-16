@@ -23,9 +23,6 @@ class OrionDevopsBootstrapStack(Stack):
 
         connection = CfnConnection(self, "orion-github-connection", connection_name="orion-github-connection", provider_type="GitHub")
 
-
-        codecommit.Repository(self, "OrionRepo", repository_name="OrionRepo")
-
         pipeline =  CodePipeline(self, "OrionCdkPipeline",
                         pipeline_name="OrionCdkPipeline",
                         synth=ShellStep("Synth",
