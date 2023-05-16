@@ -10,6 +10,8 @@ This is a project built using AWS CDK using python. For more information on AWS 
 
 ## Dependancies
 
+### Local
+
 Below is a list of dependencies that are required to be on your local machine to be able to work with the project
 
 - python3 `python3 --version`
@@ -18,6 +20,14 @@ Below is a list of dependencies that are required to be on your local machine to
 This list are dependencies are 
 
 - [sam cli](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html) `sam --version`
+
+### AWS Account
+
+There are some one of manual steps that are required to be run once when deploying to a new account.
+
+- ensure each environment you are deploying into has been bootstraped with `cdk bootstrap`
+- update the pending codestar [connection](https://docs.aws.amazon.com/dtconsole/latest/userguide/welcome-connections.html) with the active repo 
+
 
 ## Getting Started
 To manually create a virtualenv on MacOS and Linux:
