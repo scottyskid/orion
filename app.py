@@ -6,14 +6,14 @@ import os
 
 import aws_cdk as cdk
 
-from orion.orion_api_stage import OrionApiStage
-from orion.orion_devops_bootstrap_stack import OrionDevopsBootstrapStack
+from orion.app_stage import AppStage
+from orion.deployment_pipeline_stack import DeploymentPipelineStack
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = cdk.App()
 
-OrionDevopsBootstrapStack(app, "OrionDeploymentPipeline")
-OrionAppStage(app, "OrionApp")
+DeploymentPipelineStack(app, "OrionDeploymentPipeline")
+AppStage(app, "OrionApp")
 
 app.synth()

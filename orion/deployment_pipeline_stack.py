@@ -1,17 +1,14 @@
 """Stack for deploying Code* pipelines to an AWS Account"""
 
 from constructs import Construct
-from aws_cdk import (
-    Stack,
-    aws_codecommit as codecommit,
-)
+from aws_cdk import Stack
 from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
 from aws_cdk.aws_codestarconnections import CfnConnection
 
-from orion.orion_api_stage import OrionAppStage
+from orion.app_stage import AppStage
 
 
-class OrionDevopsBootstrapStack(Stack):
+class DeploymentPipelineStack(Stack):
     """Stack for deploying Code* pipelines to an AWS Account
 
     Args:
@@ -33,4 +30,4 @@ class OrionDevopsBootstrapStack(Stack):
                         )
                     )
         
-        pipeline.add_stage(OrionAppStage(self, "OrionApp"))
+        pipeline.add_stage(AppStage(self, "OrionApp"))

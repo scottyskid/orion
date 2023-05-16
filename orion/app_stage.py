@@ -1,13 +1,11 @@
 """Stage containing all stacks for the api app"""
 
 from constructs import Construct
-from aws_cdk import (
-    Stage,
-)
+from aws_cdk import Stage
 
-from orion.orion_api_stack import OrionApiStack
+from orion.api_stack import ApiStack
 
-class OrionAppStage(Stage):
+class AppStage(Stage):
     """Stage containing all stacks for the api app
 
     Args:
@@ -17,7 +15,7 @@ class OrionAppStage(Stage):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        api = OrionApiStack(self, "OrionApp")
+        api = ApiStack(self, "Api")
 
 
 
