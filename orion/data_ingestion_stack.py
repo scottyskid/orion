@@ -1,4 +1,4 @@
-"""Stack for injesting data
+"""Stack for ingesting data
 """
 from constructs import Construct
 from aws_cdk import (
@@ -12,8 +12,8 @@ from aws_cdk import (
 )
 
 
-class DataInjestionStack(Stack):
-    """Stack for injesting data
+class DataIngestionStack(Stack):
+    """Stack for ingesting data
     """
 
     def __init__(self, scope: Construct, construct_id: str, config, vpc, **kwargs) -> None:
@@ -37,7 +37,7 @@ class DataInjestionStack(Stack):
         task_definition.add_container('TaskDefinitionContainer',
                                       image=ecs.ContainerImage.from_docker_image_asset(container),
                                       environment={"S3_URI": data_bucket.s3_url_for_object('pokeapi_data_upload')},
-                                      logging=ecs.LogDriver.aws_logs(stream_prefix=f"/ecs/data-injestion/{container_name}"))
+                                      logging=ecs.LogDriver.aws_logs(stream_prefix=f"/ecs/data-ingestion/{container_name}"))
 
         data_bucket.grant_read_write(task_definition.task_role)
 

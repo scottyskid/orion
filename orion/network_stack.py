@@ -6,7 +6,7 @@ from aws_cdk import aws_ec2 as ec2
 
 
 class NetworkStack(Stack):
-    """Stack for injesting data
+    """Stack for underlying network
     """
 
     def __init__(self, scope: Construct, construct_id: str, config, **kwargs) -> None:
