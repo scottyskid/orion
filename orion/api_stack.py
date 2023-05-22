@@ -12,7 +12,7 @@ class ApiStack(Stack):
     """Core API Stack
     """
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, config, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         api = apigateway.RestApi(self, "RestApi", rest_api_name="OrionRestApi")
