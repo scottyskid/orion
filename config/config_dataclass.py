@@ -20,17 +20,17 @@ class ConfigEnvSpecificBase:
 class ConfigEnvSpecificDev(ConfigEnvSpecificBase):
     """A dataclass containing config for a specific environment
     """
-    account: str = "578994453819"
-    region: str = "ap-southeast-2"
-    name: str = "dev"
+    account: str = '578994453819'
+    region: str = 'ap-southeast-2'
+    name: str = 'dev'
 
 @dataclass(frozen=True, kw_only=True)
 class Config:
     """A dataclass containing config for the cdk app
     """
     root_dir: Path
-    repo_name: str = "scottyskid/orion" # "OWNER/REPO"
-    repo_branch: str = "main"
+    repo_name: str = 'scottyskid/orion' # 'OWNER/REPO'
+    repo_branch: str = 'main'
     removal_policy: RemovalPolicy = RemovalPolicy.DESTROY
     env: ConfigEnvSpecificBase
 

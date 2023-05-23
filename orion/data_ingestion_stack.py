@@ -25,7 +25,7 @@ class DataIngestionStack(Stack):
 
         start_state = sfn.Pass(self, 'StartState')
         
-        container_name = "pokeapi_data_upload"
+        container_name = 'pokeapi_data_upload'
         container = ecr_assets.DockerImageAsset(self, 'Container',
                                                 directory=str(config.root_dir / 'containers' / container_name),
                                                 )
@@ -36,8 +36,8 @@ class DataIngestionStack(Stack):
         task_definition = ecs.FargateTaskDefinition(self, 'TaskDefinition')
         task_definition.add_container('TaskDefinitionContainer',
                                       image=ecs.ContainerImage.from_docker_image_asset(container),
-                                      environment={"S3_URI": data_bucket.s3_url_for_object('pokeapi_data_upload')},
-                                      logging=ecs.LogDriver.aws_logs(stream_prefix=f"/ecs/data-ingestion/{container_name}"))
+                                      environment={'S3_URI': data_bucket.s3_url_for_object('pokeapi_data_upload')},
+                                      logging=ecs.LogDriver.aws_logs(stream_prefix=f'/ecs/data-ingestion/{container_name}'))
 
         data_bucket.grant_read_write(task_definition.task_role)
 

@@ -19,21 +19,21 @@ class DeploymentPipelineStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, config, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        artifact_bucket = s3.Bucket(self, "PipelineArtifactBucket",
+        artifact_bucket = s3.Bucket(self, 'PipelineArtifactBucket',
             removal_policy=config.removal_policy)
 
-        connection = CfnConnection(self, "RepoConnection", connection_name="OrionRepoConnection", provider_type="GitHub")
+        connection = CfnConnection(self, 'RepoConnection', connection_name='OrionRepoConnection', provider_type='GitHub')
 
-        pipeline =  CodePipeline(self, "CdkPipeline",
-                        pipeline_name="OrionCdkPipeline",
-                        synth=ShellStep("Synth",
+        pipeline =  CodePipeline(self, 'CdkPipeline',
+                        pipeline_name='OrionCdkPipeline',
+                        synth=ShellStep('Synth',
                             input=CodePipelineSource.connection(config.repo_name, config.repo_branch, 
                                         connection_arn=connection.attr_connection_arn),
-                            commands=["npm install -g aws-cdk",
-                                "python -m pip install -r requirements.txt",
-                                "cdk synth"]
+                            commands=['npm install -g aws-cdk',
+                                'python -m pip install -r requirements.txt',
+                                'cdk synth']
                         ),
                         artifact_bucket=artifact_bucket
                     )
         
-        pipeline.add_stage(AppStage(self, "OrionApp", config))
+        pipeline.add_stage(AppStage(self, 'OrionApp', config))

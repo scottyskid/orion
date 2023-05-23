@@ -7,12 +7,12 @@ def lambda_handler(event, context):
     body = s3_object.get()['Body'].read()
     
     response = {
-      "statusCode": 200,
-      "headers": {
-        "Content-Type": "application/json"
+      'statusCode': 200,
+      'headers': {
+        'Content-Type': 'application/json'
       },
-      "isBase64Encoded": False,
-      "body": body
+      'isBase64Encoded': False,
+      'body': body
     }
 
     return response
