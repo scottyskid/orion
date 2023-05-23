@@ -49,3 +49,5 @@ class DataIngestionStack(Stack):
         
         start_state.next(run_task)
         state_machine = sfn.StateMachine(self, 'StateMachine', definition=start_state)
+
+        self.landing_bucket = data_bucket
