@@ -80,31 +80,31 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
  * `cdk docs`        open CDK documentation
 
 ## Testing Locally
+Before every logic change commit, code should be synthed and deployed successfully 
 
-
+For more information on how to deploy locally see the [Deploying Changes](#deploying-changes) section below
 
 ### Unit tests
-There is also a very trivial test included that can be run like this:
-
-```
-$ pytest
-```
+There is also unit tests included that can be with `pytest`:
 
 ### Testing Serverless Locally
 
 SAM cli can be used to test serverless applications that have been built using cdk, for further infromation see [here](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk-testing.html)
 
 
-To start run
-```
-cdk synth
-```
+To start ensure your code has been synthed with `cdk synth`
 
-Then usage for sam is as below 
+#### Lambdas
+
+To test a lambda function you can invoke with the command below
 ```
 # Invoke the function FUNCTION_IDENTIFIER declared in the stack STACK_NAME
 sam local invoke -t ./cdk.out/orion-api.template.json ApiMethodFunction
+```
 
+#### APIs
+Then usage for sam is as below 
+```
 # Start all APIs declared in the AWS CDK application
 sam local start-api -t ./cdk.out/orion-api.template.json [OPTIONS]
 ```
@@ -118,7 +118,7 @@ sam build -t ./cdk.out/orion-api.template.json
 You can now synthesize the CloudFormation template for this code. This will check that your code compiles
 
 ```
-$ cdk synth
+cdk synth '<StageId>/*'
 ```
 
 To deploy a from your local repo you can deploy any stage with

@@ -20,7 +20,7 @@ class DeploymentPipelineStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         artifact_bucket = s3.Bucket(self, 'PipelineArtifactBucket',
-            removal_policy=config.removal_policy)
+            removal_policy=config.env.removal_policy)
 
         connection = CfnConnection(self, 'RepoConnection', connection_name='OrionRepoConnection', provider_type='GitHub')
 

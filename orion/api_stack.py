@@ -25,15 +25,16 @@ class ApiStack(Stack):
 
         api.root.add_method('GET', apigateway.LambdaIntegration(root_method))
 
-        api_resource = api.root.add_resource('api')
+        endpoint_resource = api.root.add_resource('api').add_resource('{api_route+}')
 
         pokeapi_method = lambda_.Function(self, 'ApiPokeFunction',
             code=lambda_.Code.from_asset(str(config.root_dir / 'lambdas' / 'api' / 'pokeapi')),
             handler='index.lambda_handler',
             runtime=lambda_.Runtime.PYTHON_3_10,
-            environment={'DATA_BUCKET': data_bucket.bucket_name}
+            environment={'DATA_BUCKET': data_bucket.bucket_name, 'DATA_KEY_BASE': config.api.pokeapi_data_s3_key}
         )
 
         data_bucket.grant_read(pokeapi_method)
         
-        api_resource.add_method('GET', apigateway.LambdaIntegration(pokeapi_method))
+        endpoint_resource.add_method('GET', apigateway.LambdaIntegration(pokeapi_method))
+

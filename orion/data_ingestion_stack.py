@@ -21,7 +21,7 @@ class DataIngestionStack(Stack):
 
         # S3 data landing bucket
         data_bucket = s3.Bucket(self, 'LandingBucket',
-            removal_policy=config.removal_policy)
+            removal_policy=config.env.removal_policy)
 
         start_state = sfn.Pass(self, 'StartState')
         
@@ -36,7 +36,7 @@ class DataIngestionStack(Stack):
         task_definition = ecs.FargateTaskDefinition(self, 'TaskDefinition')
         task_definition.add_container('TaskDefinitionContainer',
                                       image=ecs.ContainerImage.from_docker_image_asset(container),
-                                      environment={'S3_URI': data_bucket.s3_url_for_object('pokeapi_data_upload')},
+                                      environment={'S3_URI': data_bucket.s3_url_for_object(config.api.pokeapi_data_s3_key)},
                                       logging=ecs.LogDriver.aws_logs(stream_prefix=f'/ecs/data-ingestion/{container_name}'))
 
         data_bucket.grant_read_write(task_definition.task_role)
