@@ -21,7 +21,8 @@ class DataIngestionStack(Stack):
 
         # S3 data landing bucket
         data_bucket = s3.Bucket(self, 'LandingBucket',
-            removal_policy=config.env.removal_policy)
+            removal_policy=config.env.removal_policy,
+            auto_delete_objects=config.env.delete_objects,)
 
         start_state = sfn.Pass(self, 'StartState')
         

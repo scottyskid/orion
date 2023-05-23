@@ -13,6 +13,7 @@ class ConfigEnvSpecificBase:
     name: str
     descriminator: str = field(init=False)
     removal_policy: RemovalPolicy = RemovalPolicy.RETAIN
+    delete_objects: bool = False
 
     def __post_init__(self):
         # has to be set this way due to dataclasses.FrozenInstanceError raised if set directly
@@ -26,6 +27,8 @@ class ConfigEnvSpecificDev(ConfigEnvSpecificBase):
     region: str = 'ap-southeast-2'
     name: str = 'dev'
     removal_policy: RemovalPolicy = RemovalPolicy.DESTROY
+    delete_objects: bool = True
+
 
 
 @dataclass(frozen=True, kw_only=True)

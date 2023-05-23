@@ -19,7 +19,7 @@ app = cdk.App()
 
 env = cdk.Environment(account=config.env.account, region=config.env.region)
 
-DeploymentPipelineStack(app, f'OrionDeploymentPipeline{config.env.descriminator}', config, env=env)
-AppStage(app, f'OrionApp{config.env.descriminator}', config, env=env)
+DeploymentPipelineStack(app, f'OrionDeploymentPipeline', config, env=env)
+AppStage(app, f'OrionApp', config, env=env)
 
 app.synth()
