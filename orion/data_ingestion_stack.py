@@ -32,15 +32,17 @@ class DataIngestionStack(Stack):
                                                 )
         
         cluster = ecs.Cluster(self, 'Cluster',
-                              vpc=vpc)
+                              vpc=vpc,
+                              container_insights=True)
 
-        task_definition = ecs.FargateTaskDefinition(self, 'TaskDefinition')
+        task_definition = ecs.FargateTaskDefinition(self, 'TaskDefinition',
+                                                    cpu=4096,
+                                                    memory_limit_mib=8192,)
+        
         task_definition.add_container('TaskDefinitionContainer',
                                       image=ecs.ContainerImage.from_docker_image_asset(container),
                                       environment={'S3_URI': data_bucket.s3_url_for_object(config.api.pokeapi_data_s3_key)},
                                       logging=ecs.LogDriver.aws_logs(stream_prefix=f'/ecs/data-ingestion/{container_name}'),
-                                      cpu=4096,
-                                      memoryMiB=8192,
                                       )
 
         data_bucket.grant_read_write(task_definition.task_role)
