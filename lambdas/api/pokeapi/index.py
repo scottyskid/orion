@@ -5,10 +5,12 @@ import boto3
 def lambda_handler(event, context):
     s3 = boto3.resource('s3')
     print(event)
-    #TODO strip trailing '/' from path
+    #FIXME strip trailing '/' from path
     s3_object = s3.Object(bucket_name=os.environ['DATA_BUCKET'], 
                           key=f"{os.environ['DATA_KEY_BASE']}{event['path']}/index.json")
     body = s3_object.get()['Body'].read()
+
+    #TODO Add environment variables json for local deployment 
 
     #TODO Raise 404 on missing file
     

@@ -42,13 +42,17 @@ class DataIngestionStack(Stack):
 
         data_bucket.grant_read_write(task_definition.task_role)
 
+        #TODO add wait for completion step
         run_task = sfn_tasks.EcsRunTask(self, 'RunTask',
                                         cluster=cluster,
                                         launch_target=sfn_tasks.EcsFargateLaunchTarget(platform_version=ecs.FargatePlatformVersion.LATEST),
-                                        task_definition=task_definition)
+                                        task_definition=task_definition,
+                                        propagated_tag_source=ecs.PropagatedTagSource.TASK_DEFINITION)
         
         
         start_state.next(run_task)
+
+        #TODO run this statemachine as a custom resource on create
         state_machine = sfn.StateMachine(self, 'StateMachine', definition=start_state)
 
         self.landing_bucket = data_bucket

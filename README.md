@@ -92,7 +92,9 @@ There is also unit tests included that can be with `pytest`:
 SAM cli can be used to test serverless applications that have been built using cdk, for further infromation see [here](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk-testing.html)
 
 
-To start ensure your code has been synthed with `cdk synth`
+To start ensure your code has been synthed with `cdk synth "<Stage>/*`
+
+CDK stores stages in `cdk.out/assembly-<StageName>/<StackName><Descriminator>.template.json`
 
 #### Lambdas
 
@@ -103,10 +105,10 @@ sam local invoke -t ./cdk.out/orion-api.template.json ApiMethodFunction
 ```
 
 #### APIs
-Then usage for sam is as below 
+
 ```
 # Start all APIs declared in the AWS CDK application
-sam local start-api -t ./cdk.out/orion-api.template.json [OPTIONS]
+sam local start-api -t ./cdk.out/assembly-OrionApp/OrionAppApiA21C1F57.template.json [OPTIONS]
 ```
 
 ```
