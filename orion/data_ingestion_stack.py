@@ -38,7 +38,10 @@ class DataIngestionStack(Stack):
         task_definition.add_container('TaskDefinitionContainer',
                                       image=ecs.ContainerImage.from_docker_image_asset(container),
                                       environment={'S3_URI': data_bucket.s3_url_for_object(config.api.pokeapi_data_s3_key)},
-                                      logging=ecs.LogDriver.aws_logs(stream_prefix=f'/ecs/data-ingestion/{container_name}'))
+                                      logging=ecs.LogDriver.aws_logs(stream_prefix=f'/ecs/data-ingestion/{container_name}'),
+                                      cpu=4096,
+                                      memoryMiB=8192,
+                                      )
 
         data_bucket.grant_read_write(task_definition.task_role)
 
@@ -47,7 +50,8 @@ class DataIngestionStack(Stack):
                                         cluster=cluster,
                                         launch_target=sfn_tasks.EcsFargateLaunchTarget(platform_version=ecs.FargatePlatformVersion.LATEST),
                                         task_definition=task_definition,
-                                        propagated_tag_source=ecs.PropagatedTagSource.TASK_DEFINITION)
+                                        propagated_tag_source=ecs.PropagatedTagSource.TASK_DEFINITION,
+                                        )
         
         
         start_state.next(run_task)
