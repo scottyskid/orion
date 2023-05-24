@@ -1,7 +1,7 @@
 import os
 import boto3
 
-#TODO Add logging from lambda power tools
+#TODO Add logging from lambda power tools (JSON?)
 def lambda_handler(event, context):
     s3 = boto3.resource('s3')
     print(event)

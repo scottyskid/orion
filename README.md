@@ -96,6 +96,12 @@ To start ensure your code has been synthed with `cdk synth "<Stage>/*`
 
 CDK stores stages in `cdk.out/assembly-<StageName>/<StackName><Descriminator>.template.json`
 
+Some local testing commands require environment variables passed through the CLI.
+These env vars are to be stored in the `config/local/` folder though this is not committed to version control 
+as tracking changes might impact local testing of others. To see the structure of the file see 
+[SAMs Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-using-invoke.html#serverless-sam-cli-using-invoke-environment-file). This file can
+be passed using the `--env-vars` argument
+
 #### Lambdas
 
 To test a lambda function you can invoke with the command below

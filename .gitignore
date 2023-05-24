@@ -24,5 +24,8 @@ cdk.out/
 # SAM CLI Staging files
 .aws-sam/
 
+# Local Development files to not commit
 data/
 .vscode/
+## Testing files 
+config/local
