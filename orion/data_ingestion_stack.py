@@ -36,8 +36,8 @@ class DataIngestionStack(Stack):
                               container_insights=True)
 
         task_definition = ecs.FargateTaskDefinition(self, 'TaskDefinition',
-                                                    cpu=4096,
-                                                    memory_limit_mib=8192,)
+                                                    cpu=16384,
+                                                    memory_limit_mib=32768,)
         
         task_definition.add_container('TaskDefinitionContainer',
                                       image=ecs.ContainerImage.from_docker_image_asset(container),
