@@ -9,6 +9,7 @@ from aws_cdk import (
     aws_s3 as s3,
     aws_stepfunctions as sfn,
     aws_stepfunctions_tasks as sfn_tasks,
+    custom_resources as cr,
 )
 
 
@@ -23,6 +24,8 @@ class DataIngestionStack(Stack):
         data_bucket = s3.Bucket(self, 'LandingBucket',
             removal_policy=config.env.removal_policy,
             auto_delete_objects=config.env.delete_objects,)
+        
+        self.landing_bucket = data_bucket
 
         start_state = sfn.Pass(self, 'StartState')
         
@@ -55,10 +58,21 @@ class DataIngestionStack(Stack):
                                         propagated_tag_source=ecs.PropagatedTagSource.TASK_DEFINITION,
                                         )
         
-        
         start_state.next(run_task)
 
-        #TODO run this statemachine as a custom resource on create
         state_machine = sfn.StateMachine(self, 'StateMachine', definition=start_state)
 
-        self.landing_bucket = data_bucket
+        # Custom Resource to run Data Ingestion State Machine on deploy
+        start_execution_sdk_call = cr.AwsSdkCall(action='startExecution',
+                                                 service='StepFunctions',
+                                                 parameters={'stateMachineArn': state_machine.state_machine_arn},
+                                                 physical_resource_id=cr.PhysicalResourceId.of('StartDataIngestion'),)
+
+        start_state_machine_cr = cr.AwsCustomResource(self, 'StartDataIngestion',
+                                                      on_create=start_execution_sdk_call,
+                                                      policy=cr.AwsCustomResourcePolicy.from_sdk_calls(resources=cr.AwsCustomResourcePolicy.ANY_RESOURCE))
+
+        state_machine.grant_start_execution(start_state_machine_cr)
+
+
+
