@@ -26,7 +26,7 @@ Tags.of(app).add('ccx:project:name', 'orion')
 config = ConfigRoot(env=ConfigEnvPipeline(), root_dir = ROOT_DIR)
 env = cdk.Environment(account=config.env.account, region=config.env.region)
 deploymen_pipeline_stack = DeploymentPipelineStack(app, f'OrionDeploymentPipeline', config, env=env)
-for key, value in config.project_tags.values():
+for key, value in config.project_tags.items():
     Tags.of(deploymen_pipeline_stack).add(key, value)
 
     
@@ -37,7 +37,7 @@ for key, value in config.project_tags.values():
 config = ConfigRoot(env=ConfigEnvAlpha(), root_dir = ROOT_DIR)
 env = cdk.Environment(account=config.env.account, region=config.env.region)
 apha_stage = AppStage(app, f'OrionApp{config.env.descriminator}', config, env=env)
-for key, value in config.project_tags.values():
+for key, value in config.project_tags.items():
     Tags.of(apha_stage).add(key, value)
 Tags.of(apha_stage).add('ccx:project:stage', 'alpha')
 
