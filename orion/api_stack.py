@@ -3,10 +3,12 @@
 from os import path
 
 from constructs import Construct
+from aws_cdk import Duration
 from aws_cdk import Stack
 from aws_cdk import Tags
 from aws_cdk import aws_apigateway as apigateway
 from aws_cdk import aws_lambda as lambda_
+from aws_cdk import aws_lambda_python_alpha as lambda_python
 
 
 class ApiStack(Stack):
@@ -20,25 +22,27 @@ class ApiStack(Stack):
 
         api = apigateway.RestApi(self, 'RestApi', rest_api_name='OrionRestApi')
 
-        powertools_layer = lambda_.LayerVersion.from_layer_version_arn(self, 'LambdaPowertoolsLayer', config.api.lambda_powertools_layer_arn.format(aws_region=self.region))
+        # powertools_layer = lambda_.LayerVersion.from_layer_version_arn(self, 'LambdaPowertoolsLayer', config.api.lambda_powertools_layer_arn.format(aws_region=self.region))
 
-        root_method = lambda_.Function(self, 'ApiRootFunction',
-            code=lambda_.Code.from_asset(str(config.root_dir / 'lambdas' / 'api' / 'root')),
-            handler='index.lambda_handler',
+        root_method = lambda_python.PythonFunction(self, 'ApiRootFunction',
+            entry=str(config.root_dir / 'lambdas' / 'api' / 'root'),
+            index='index.py',
+            handler='lambda_handler',
             runtime=lambda_.Runtime.PYTHON_3_10,
-            layers=[powertools_layer],
+            timeout=Duration.minutes(1),
         )
 
         api.root.add_method('GET', apigateway.LambdaIntegration(root_method))
 
         endpoint_resource = api.root.add_resource('api').add_resource('{api_route+}')
 
-        pokeapi_method = lambda_.Function(self, 'ApiPokeFunction',
-            code=lambda_.Code.from_asset(str(config.root_dir / 'lambdas' / 'api' / 'pokeapi')),
-            handler='index.lambda_handler',
+        pokeapi_method = lambda_python.PythonFunction(self, 'ApiPokeFunction',
+            entry=str(config.root_dir / 'lambdas' / 'api' / 'pokeapi'),
+            index='index.py',
+            handler='lambda_handler',
             runtime=lambda_.Runtime.PYTHON_3_10,
             environment={'DATA_BUCKET': data_bucket.bucket_name, 'DATA_KEY_BASE': config.api.pokeapi_data_s3_key},
-            layers=[powertools_layer],
+            timeout=Duration.minutes(1),
         )
 
         data_bucket.grant_read(pokeapi_method)
