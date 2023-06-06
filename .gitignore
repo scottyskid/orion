@@ -26,6 +26,8 @@ cdk.out/
 
 # Local Development files to not commit
 data/
-.vscode/
+.vscode/*
+!.vscode/settings.json
+
 ## Testing files 
 config/local

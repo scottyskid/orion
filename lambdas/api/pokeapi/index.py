@@ -43,7 +43,7 @@ def handle_botocore_client_error(
 ):  # receives exception raised
     if error.response["Error"]["Code"] == "NoSuchBucket":
         logger.exception(
-            f"The bucket doesnt exist. Check the env var is accurate. If local check you have imported environment variables"
+            "The bucket doesnt exist. Check the env var is accurate. If local check you have imported environment variables"
         )
         return Response(
             status_code=500,
@@ -51,14 +51,14 @@ def handle_botocore_client_error(
             body="Internal server error, Bucket does not exist",
         )
     elif error.response["Error"]["Code"] == "NoSuchKey":
-        logger.exception(f"The key doesnt exist")
+        logger.exception("The key doesnt exist")
         return Response(
             status_code=404,
             content_type=content_types.TEXT_PLAIN,
             body="Not found",
         )
     else:
-        logger.exception(f"Unhandeled Botocore excpetion")
+        logger.exception("Unhandeled Botocore excpetion")
         raise InternalServerError("Internal server error")
 
 
@@ -93,4 +93,5 @@ def lambda_handler(event: APIGatewayProxyEvent, context: LambdaContext):
 
     # TODO pagenation and multiple calls - DynamoDB
 
-    # TODO allow searching for name, i can use the index in the upper level index.json to do this - DynamoDB
+    # TODO allow searching for name,
+    # i can use the index in the upper level index.json to do this - DynamoDB

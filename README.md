@@ -79,6 +79,11 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
  * `cdk diff`        compare deployed stack with current state
  * `cdk docs`        open CDK documentation
 
+ ### Linting and Formatting
+
+ The prefered linter of choice is `pylint` and the autoformatter used for this project is `black` along with `isort`
+ both of these are listed in the `requirements-dev.txt` and have specific settings set up in `pyproject.toml`
+
 ## Testing Locally
 Before every logic change commit, code should be synthed and deployed successfully 
 
@@ -114,7 +119,7 @@ sam local invoke -t ./cdk.out/orion-api.template.json ApiMethodFunction
 
 ```
 # Start all APIs declared in the AWS CDK application
-sam local start-api -t ./cdk.out/assembly-OrionApp/OrionAppApiA21C1F57.template.json [OPTIONS]
+sam local start-api -t ./cdk.out/assembly-OrionApp/OrionAppApiXXXXXXXX.template.json [OPTIONS]
 ```
 
 ```
