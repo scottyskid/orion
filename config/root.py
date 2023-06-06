@@ -23,4 +23,6 @@ class ConfigRoot:
     root_dir: Path
     repo_name: str = "scottyskid/orion"  # 'OWNER/REPO'
     repo_branch: str = "main"
-    project_tags: dict = field(default_factory=lambda: {"ccx:project:name": "orion"})
+    project_tags: dict[str, str] = field(
+        default_factory=lambda: {"ccx:project:name": "orion"}
+    )

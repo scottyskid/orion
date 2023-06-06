@@ -1,8 +1,10 @@
 """Stage containing all stacks for the api app"""
+import typing
 
 from aws_cdk import Stage
 from constructs import Construct
 
+from config.root import ConfigRoot
 from orion.api_stack import ApiStack
 from orion.data_ingestion_stack import DataIngestionStack
 from orion.network_stack import NetworkStack
@@ -15,7 +17,13 @@ class AppStage(Stage):
         Stage (cdk.Stage): the stage
     """
 
-    def __init__(self, scope: Construct, construct_id: str, config, **kwargs) -> None:
+    def __init__(
+        self,
+        scope: Construct,
+        construct_id: str,
+        config: ConfigRoot,
+        **kwargs: typing.Any,
+    ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         network = NetworkStack(self, "Network", config)

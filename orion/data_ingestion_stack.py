@@ -1,6 +1,9 @@
 """Stack for ingesting data
 """
+import typing
+
 from aws_cdk import Stack
+from aws_cdk import aws_ec2 as ec2
 from aws_cdk import aws_ecr_assets as ecr_assets
 from aws_cdk import aws_ecs as ecs
 from aws_cdk import aws_s3 as s3
@@ -8,6 +11,8 @@ from aws_cdk import aws_stepfunctions as sfn
 from aws_cdk import aws_stepfunctions_tasks as sfn_tasks
 from aws_cdk import custom_resources as cr
 from constructs import Construct
+
+from config.root import ConfigRoot
 
 
 class DataIngestionStack(Stack):
@@ -17,9 +22,9 @@ class DataIngestionStack(Stack):
         self,
         scope: Construct,
         construct_id: str,
-        config,
-        vpc,
-        **kwargs,
+        config: ConfigRoot,
+        vpc: ec2.IVpc,
+        **kwargs: typing.Any,
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 

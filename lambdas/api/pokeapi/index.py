@@ -3,6 +3,7 @@
 
 import json
 import os
+import typing
 
 import boto3
 import botocore
@@ -22,9 +23,9 @@ logger = Logger()
 app = APIGatewayRestResolver()
 
 
-@app.exception_handler(ValueError)
-def handle_invalid_limit_qs(ex: ValueError):  # receives exception raised
-    metadata: dict = {
+@app.exception_handler(ValueError)  # type: ignore[misc]
+def handle_invalid_limit_qs(ex: ValueError) -> Response:  # receives exception raised
+    metadata: dict[str, str | dict[str, str] | None] = {
         "path": app.current_event.path,
         "query_strings": app.current_event.query_string_parameters,
     }
@@ -37,7 +38,7 @@ def handle_invalid_limit_qs(ex: ValueError):  # receives exception raised
     )
 
 
-@app.exception_handler(botocore.exceptions.ClientError)
+@app.exception_handler(botocore.exceptions.ClientError)  # type: ignore[misc]
 def handle_botocore_client_error(
     error: botocore.exceptions.ClientError,
 ) -> Response | None:  # receives exception raised
@@ -64,9 +65,9 @@ def handle_botocore_client_error(
     raise InternalServerError("Internal server error")
 
 
-@app.get("/api/.+")
+@app.get("/api/.+")  # type: ignore[misc]
 @tracer.capture_method
-def get_file() -> dict:
+def get_file() -> dict[typing.Any, typing.Any]:
     path: str = app.current_event.path.rstrip("/")
 
     bucket: str = os.environ["DATA_BUCKET"]
@@ -88,7 +89,10 @@ def get_file() -> dict:
     correlation_id_path=correlation_paths.API_GATEWAY_REST, log_event=True
 )
 @tracer.capture_lambda_handler
-def lambda_handler(event: APIGatewayProxyEvent, context: LambdaContext):
+def lambda_handler(
+    event: APIGatewayProxyEvent,
+    context: LambdaContext,
+) -> dict[str, typing.Any]:
     app_resolve = app.resolve(event, context)
 
     return app_resolve

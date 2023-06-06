@@ -14,7 +14,7 @@ class ConfigEnvBase:
     removal_policy: RemovalPolicy = RemovalPolicy.RETAIN
     delete_objects: bool = False
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         # has to be set this way due to dataclasses.FrozenInstanceError
         # raised if set directly
         object.__setattr__(self, "descriminator", self.name.capitalize())
