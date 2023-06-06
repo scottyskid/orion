@@ -1,6 +1,3 @@
-[tool.pylint.format]
-max-line-length = "88"
-
 [tool.isort]
 profile = "black"
 
@@ -21,22 +18,87 @@ exclude = '''
 )/
 '''
 
+# For more information about these pylint options see https://pylint.readthedocs.io/en/latest/user_guide/configuration/all-options.html
+[tool.pylint.main]
 
+# List of plugins (as comma separated values of python modules names) to load,
+# usually to register additional checkers.
+load-plugins = '''
+  pylint.extensions.check_elif,
+  pylint.extensions.bad_builtin,
+  pylint.extensions.docparams,
+  pylint.extensions.for_any_all,
+  pylint.extensions.set_membership,
+  pylint.extensions.code_style,
+  pylint.extensions.overlapping_exceptions,
+  pylint.extensions.typing,
+  pylint.extensions.redefined_variable_type,
+  pylint.extensions.comparison_placement,
+  pylint.extensions.broad_try_clause,
+  pylint.extensions.dict_init_mutate,
+  pylint.extensions.consider_refactoring_into_while_condition,
+'''
+# Minimum supported python version
+py-version = '3.10.0'
 
 [tool.pylint."MESSAGES CONTROL"]
 
 # Only show warnings with the listed confidence levels. Leave empty to show
-# all. Valid levels: HIGH, INFERENCE, INFERENCE_FAILURE, UNDEFINED.
-confidence = ''
+# all. Valid levels: HIGH, INFERENCE, INFERENCE_FAILURE, UNDEFINED
+# confidence=
+
+# Enable the message, report, category or checker with the given id(s). You can
+# either give multiple identifier separated by comma (,) or put this option
+# multiple time (only on the command line, not in the configuration file where
+# it should appear only once). See also the "--disable" option for examples.
+enable='''
+  use-symbolic-message-instead,
+  useless-suppression,
+'''
 
 # Disable the message, report, category or checker with the given id(s). You
 # can either give multiple identifiers separated by comma (,) or put this
-# option multiple times (only on the command liblackne, not in the configuration
-# file where it should appear only once). You can also use "--disable=all" to
-# disable everything first and then reenable specific checks. For example, if
+# option multiple times (only on the command line, not in the configuration
+# file where it should appear only once).You can also use "--disable=all" to
+# disable everything first and then re-enable specific checks. For example, if
 # you want to run only the similarities checker, you can use "--disable=all
 # --enable=similarities". If you want to run only the classes checker, but have
-# no Warning level messages displayed, use "--disable=all --enable=classes
-# --disable=W".
-disable = '''logging-fstring-interpolation
+# no Warning level messages displayed, use"--disable=all --enable=classes
+# --disable=W"
+
+disable='''
+  attribute-defined-outside-init,
+  invalid-name,
+  missing-docstring,
+  protected-access,
+  too-few-public-methods,
+  format,
+  fixme,
+  consider-using-assignment-expr,
+  logging-fstring-interpolation,
 '''
+
+[tool.pylint.logging]
+
+# The type of string formatting that logging methods do. `old` means using %
+# formatting, `new` is for `{}` formatting.
+logging-format-style='new'
+
+
+[tool.pylint.miscellaneous]
+
+# List of note tags to take in consideration, separated by a comma.
+notes='FIXME,XXX,TODO,HACK'
+
+# Regular expression of note tags to take in consideration.
+#notes-rgx=
+
+
+
+[tool.pylint.format]
+
+# Maximum number of characters on a single line.
+max-line-length=88 # This is the black default
+
+# Regexp for a line that is allowed to be longer than the limit.
+ignore-long-lines='^\s*(# )?<?https?://\S+>?$'

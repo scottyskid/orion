@@ -1,7 +1,5 @@
 """Core API Stack
 """
-from os import path
-
 from aws_cdk import Duration, Stack, Tags
 from aws_cdk import aws_apigateway as apigateway
 from aws_cdk import aws_lambda as lambda_
