@@ -84,6 +84,10 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
  The prefered linter of choice is `pylint` and the autoformatter used for this project is `black` along with `isort`
  both of these are listed in the `requirements-dev.txt` and have specific settings set up in `pyproject.toml`
 
+The autoformatters are set up to run as pre-commit hooks using a python package `pre-commit`
+For this to work, after installing `requirements-dev.txt` run the command `pre-commit install`
+for more inforation see [https://pre-commit.com/]
+
 ## Testing Locally
 Before every logic change commit, code should be synthed and deployed successfully 
 

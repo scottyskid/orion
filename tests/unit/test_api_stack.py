@@ -4,8 +4,8 @@ from pathlib import Path
 import aws_cdk as core
 import aws_cdk.assertions as assertions
 
-from orion.api_stack import ApiStack
 from config.root import Config
+from orion.api_stack import ApiStack
 
 ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent
 config = Config(root_dir=ROOT_DIR)

@@ -8,12 +8,11 @@ from pathlib import Path
 import aws_cdk as cdk
 from aws_cdk import Tags
 
-from orion.app_stage import AppStage
-from orion.deployment_pipeline_stack import DeploymentPipelineStack
-from config.root import ConfigRoot
 from config.env.alpha import ConfigEnvAlpha
 from config.env.pipeline import ConfigEnvPipeline
-
+from config.root import ConfigRoot
+from orion.app_stage import AppStage
+from orion.deployment_pipeline_stack import DeploymentPipelineStack
 
 ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
 
