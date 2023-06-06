@@ -27,7 +27,11 @@ class ApiStack(Stack):
 
         Tags.of(self).add("ccx:project:subgroup", "orion-api")
 
-        api = apigateway.RestApi(self, "RestApi", rest_api_name="OrionRestApi")
+        api: apigateway.RestApi = apigateway.RestApi(
+            self,
+            "RestApi",
+            rest_api_name="OrionRestApi",
+        )
 
         pokeapi_method = lambda_python.PythonFunction(
             self,

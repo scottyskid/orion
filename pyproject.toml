@@ -51,11 +51,11 @@ disallow_untyped_calls = true
 disallow_incomplete_defs = true
 disallow_untyped_defs = true
 
-# # This one isn't too hard to get passing, but return on investment is lower
-# no_implicit_reexport = true
+# This one isn't too hard to get passing, but return on investment is lower
+no_implicit_reexport = true
 
 # # This one can be tricky to get passing if you use a lot of untyped libraries
-# warn_return_any = true
+warn_return_any = true
 
 [[tool.mypy.overrides]]
 module = [
@@ -66,7 +66,9 @@ ignore_missing_imports = true
 
 
 [tool.pylint.main]
-# For more information about these pylint options see https://pylint.readthedocs.io/en/latest/user_guide/configuration/all-options.html
+# For more information about these pylint options see 
+# https://pylint.readthedocs.io/en/latest/user_guide/configuration/all-options.html
+
 
 # List of plugins (as comma separated values of python modules names) to load,
 # usually to register additional checkers.
