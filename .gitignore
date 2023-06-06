@@ -28,6 +28,7 @@ cdk.out/
 data/
 .vscode/*
 !.vscode/settings.json
+.mypy_cache/*
 
 ## Testing files 
 config/local

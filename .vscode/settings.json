@@ -6,7 +6,9 @@
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
-        }
+        },
     },
-    "python.formatting.provider": "none"
+    "python.formatting.provider": "none",
+    "python.linting.mypyEnabled": true,
+    "python.linting.ignorePatterns": [ "venv/**/*.py", "cdk.out/**/*.py"]
 }

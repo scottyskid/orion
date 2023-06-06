@@ -40,7 +40,7 @@ def handle_invalid_limit_qs(ex: ValueError):  # receives exception raised
 @app.exception_handler(botocore.exceptions.ClientError)
 def handle_botocore_client_error(
     error: botocore.exceptions.ClientError,
-):  # receives exception raised
+) -> Response | None:  # receives exception raised
     if error.response["Error"]["Code"] == "NoSuchBucket":
         logger.exception(
             "The bucket doesnt exist. Check the env var is accurate. If local check you have imported environment variables"
@@ -50,21 +50,20 @@ def handle_botocore_client_error(
             content_type=content_types.TEXT_PLAIN,
             body="Internal server error, Bucket does not exist",
         )
-    elif error.response["Error"]["Code"] == "NoSuchKey":
+    if error.response["Error"]["Code"] == "NoSuchKey":
         logger.exception("The key doesnt exist")
         return Response(
             status_code=404,
             content_type=content_types.TEXT_PLAIN,
             body="Not found",
         )
-    else:
-        logger.exception("Unhandeled Botocore excpetion")
-        raise InternalServerError("Internal server error")
+    logger.exception("Unhandeled Botocore excpetion")
+    raise InternalServerError("Internal server error")
 
 
 @app.get("/api/.+")
 @tracer.capture_method
-def get_file():
+def get_file() -> dict:
     path: str = app.current_event.path.rstrip("/")
 
     bucket: str = os.environ["DATA_BUCKET"]
@@ -82,7 +81,7 @@ def get_file():
     return json.loads(body)
 
 
-@logger.inject_lambda_context(
+@logger.inject_lambda_context(  # type: ignore[arg-type]
     correlation_id_path=correlation_paths.API_GATEWAY_REST, log_event=True
 )
 @tracer.capture_lambda_handler

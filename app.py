@@ -52,3 +52,6 @@ Tags.of(apha_stage).add("ccx:project:stage", "alpha")
 
 
 app.synth()
+
+# TODO Switch to flake8 and mypy
+# TODO delete venv and readd it to install dependancies and check they are  are working
