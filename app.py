@@ -26,7 +26,7 @@ config = ConfigRoot(env=ConfigEnvPipeline(), root_dir=ROOT_DIR)
 env = cdk.Environment(account=config.env.account, region=config.env.region)
 deploymen_pipeline_stack = DeploymentPipelineStack(
     app,
-    f"OrionDeploymentPipeline",
+    "OrionDeploymentPipeline",
     config,
     env=env,
 )
@@ -35,7 +35,8 @@ for key, value in config.project_tags.items():
 
 
 # A Stage is used to deploy stacks to different environments
-# It allows for the synthing of all cdk code at once with the ability to deploy each at different times
+# It allows for the synthing of all cdk code at once with the
+# ability to deploy each at different times
 
 # Deploy Alpha stage
 config = ConfigRoot(env=ConfigEnvAlpha(), root_dir=ROOT_DIR)

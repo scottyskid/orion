@@ -3,7 +3,6 @@
 from aws_cdk import Stack
 from aws_cdk import aws_ecr_assets as ecr_assets
 from aws_cdk import aws_ecs as ecs
-from aws_cdk import aws_lambda_python_alpha as lambda_python
 from aws_cdk import aws_s3 as s3
 from aws_cdk import aws_stepfunctions as sfn
 from aws_cdk import aws_stepfunctions_tasks as sfn_tasks

@@ -10,5 +10,6 @@
     },
     "python.formatting.provider": "none",
     "python.linting.mypyEnabled": true,
-    "python.linting.ignorePatterns": [ "venv/**/*.py", "cdk.out/**/*.py"]
+    "python.linting.ignorePatterns": [ "venv/**/*.py", "cdk.out/**/*.py"],
+    "python.linting.flake8Enabled": true
 }

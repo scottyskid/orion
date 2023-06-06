@@ -43,7 +43,10 @@ def handle_botocore_client_error(
 ) -> Response | None:  # receives exception raised
     if error.response["Error"]["Code"] == "NoSuchBucket":
         logger.exception(
-            "The bucket doesnt exist. Check the env var is accurate. If local check you have imported environment variables"
+            (
+                "The bucket doesnt exist. Check the env var is accurate. ",
+                "If local check you have imported environment variables",
+            )
         )
         return Response(
             status_code=500,

@@ -15,5 +15,6 @@ class ConfigEnvBase:
     delete_objects: bool = False
 
     def __post_init__(self):
-        # has to be set this way due to dataclasses.FrozenInstanceError raised if set directly
+        # has to be set this way due to dataclasses.FrozenInstanceError
+        # raised if set directly
         object.__setattr__(self, "descriminator", self.name.capitalize())

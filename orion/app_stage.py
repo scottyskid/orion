@@ -20,4 +20,4 @@ class AppStage(Stage):
 
         network = NetworkStack(self, "Network", config)
         data_ingestion = DataIngestionStack(self, "DataIngestion", config, network.vpc)
-        api = ApiStack(self, "Api", config, data_ingestion.landing_bucket)
+        ApiStack(self, "Api", config, data_ingestion.landing_bucket)
