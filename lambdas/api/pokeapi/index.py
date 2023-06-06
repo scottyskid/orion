@@ -67,7 +67,7 @@ def handle_botocore_client_error(
 
 @app.get("/api/.+")  # type: ignore[misc]
 @tracer.capture_method
-def get_file() -> dict[str, typing.Any]:
+def get_file() -> dict[str, object]:
     path: str = app.current_event.path.rstrip("/")
 
     bucket: str = os.environ["DATA_BUCKET"]
@@ -80,9 +80,10 @@ def get_file() -> dict[str, typing.Any]:
 
     response = s3_object.get()
     body = response["Body"].read()
+    body_parsed: dict[str, object] = json.loads(body)
 
     # Must return a JSON object
-    return json.loads(body)  # type: ignore[no-any-return]
+    return body_parsed
 
 
 @logger.inject_lambda_context(  # type: ignore[arg-type]
