@@ -4,21 +4,18 @@
 import json
 import os
 
+import boto3
+import botocore
 from aws_lambda_powertools import Logger, Tracer
 from aws_lambda_powertools.event_handler import (
     APIGatewayRestResolver,
     Response,
     content_types,
 )
-from aws_lambda_powertools.event_handler.exceptions import (
-    InternalServerError,
-)
+from aws_lambda_powertools.event_handler.exceptions import InternalServerError
 from aws_lambda_powertools.logging import correlation_paths
-from aws_lambda_powertools.utilities.typing import LambdaContext
 from aws_lambda_powertools.utilities.data_classes import APIGatewayProxyEvent
-
-import boto3
-import botocore
+from aws_lambda_powertools.utilities.typing import LambdaContext
 
 tracer = Tracer()
 logger = Logger()
