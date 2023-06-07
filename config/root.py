@@ -15,11 +15,20 @@ class ConfigApi:
 
 
 @dataclass(frozen=True, kw_only=True)
+class ConfigDataIngestion:
+    """A dataclass containing config for the cdk app"""
+
+    container_cpu: int = 16384
+    container_memory: int = 32768
+
+
+@dataclass(frozen=True, kw_only=True)
 class ConfigRoot:
     """A dataclass containing config for the cdk app"""
 
     env: ConfigEnvBase
     api: ConfigApi = ConfigApi()
+    data_ingestion: ConfigDataIngestion = ConfigDataIngestion()
     root_dir: Path
     repo_name: str = "scottyskid/orion"  # 'OWNER/REPO'
     repo_branch: str = "main"
