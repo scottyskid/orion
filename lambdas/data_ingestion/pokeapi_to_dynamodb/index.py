@@ -23,6 +23,10 @@ def get_category_items(category: str) -> pd.DataFrame:
     item_df: pd.DataFrame = pd.DataFrame(categories["results"])
     item_df["category"] = category
     item_df["id"] = item_df["url"].str.split("/").str[-2]
+    set_s3_uri = (
+        lambda x: f"s3://{os.environ['DATA_BUCKET']}/{os.environ['DATA_KEY_BASE']}/{x}"
+    )
+    item_df["s3_uri"] = item_df["url"].apply(set_s3_uri)
 
     return item_df
 
@@ -53,5 +57,3 @@ def lambda_handler(event: object, context: LambdaContext) -> None:
         df=items_df,
         table_name=os.environ["TABLE_NAME_ITEMS"],
     )
-
-    pass
