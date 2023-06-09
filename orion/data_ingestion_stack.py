@@ -7,8 +7,7 @@ from aws_cdk import aws_dynamodb as dynamodb
 from aws_cdk import aws_ec2 as ec2
 from aws_cdk import aws_ecr_assets as ecr_assets
 from aws_cdk import aws_ecs as ecs
-from aws_cdk import aws_lambda as lambda_
-from aws_cdk import aws_lambda_python_alpha as lambda_python
+from aws_cdk import aws_lambda as _lambda
 from aws_cdk import aws_s3 as s3
 from aws_cdk import aws_stepfunctions as sfn
 from aws_cdk import aws_stepfunctions_tasks as sfn_tasks
@@ -48,7 +47,8 @@ class DataIngestionStack(Stack):
 
         # ---------- Populate DynamoDB ----------
 
-        self.build_sfn_task_populate_dynamodb_tables()
+        populate_dynamodb_task = self.build_sfn_task_populate_dynamodb_tables()
+        sfn_task_pokeapi_source_download.next(populate_dynamodb_task)
 
         # ---------- Build State Machine ----------
         self.build_state_machine()
@@ -100,22 +100,21 @@ class DataIngestionStack(Stack):
         self.landing_bucket.grant_read_write(task_definition.task_role)
 
         # TODO add wait for completion step
-        self.sfn_task_pokeapi_source_download: sfn_tasks.EcsRunTask = (
-            sfn_tasks.EcsRunTask(
-                self,
-                "RunTask",
-                cluster=cluster,
-                launch_target=sfn_tasks.EcsFargateLaunchTarget(
-                    platform_version=ecs.FargatePlatformVersion.LATEST
-                ),
-                task_definition=task_definition,
-                propagated_tag_source=ecs.PropagatedTagSource.TASK_DEFINITION,
-            )
+        self.sfn_task_pokeapi_download: sfn_tasks.EcsRunTask = sfn_tasks.EcsRunTask(
+            self,
+            "RunTask",
+            cluster=cluster,
+            integration_pattern=sfn.IntegrationPattern.RUN_JOB,  # waits for completion
+            launch_target=sfn_tasks.EcsFargateLaunchTarget(
+                platform_version=ecs.FargatePlatformVersion.LATEST
+            ),
+            task_definition=task_definition,
+            propagated_tag_source=ecs.PropagatedTagSource.TASK_DEFINITION,
         )
 
-        return self.sfn_task_pokeapi_source_download
+        return self.sfn_task_pokeapi_download
 
-    def build_sfn_task_populate_dynamodb_tables(self) -> None:
+    def build_sfn_task_populate_dynamodb_tables(self) -> sfn_tasks.LambdaInvoke:
         category_table: dynamodb.Table = dynamodb.Table(
             self,
             "CategoryTable",
@@ -123,6 +122,7 @@ class DataIngestionStack(Stack):
                 name="category", type=dynamodb.AttributeType.STRING
             ),
             removal_policy=self.config.env.removal_policy,
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
         )
 
         item_table: dynamodb.Table = dynamodb.Table(
@@ -131,34 +131,55 @@ class DataIngestionStack(Stack):
             partition_key=dynamodb.Attribute(
                 name="category", type=dynamodb.AttributeType.STRING
             ),
-            sort_key=dynamodb.Attribute(name="id", type=dynamodb.AttributeType.NUMBER),
+            sort_key=dynamodb.Attribute(
+                name="id",
+                type=dynamodb.AttributeType.STRING,
+            ),
             removal_policy=self.config.env.removal_policy,
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
         )
 
-        pokeapi_to_dynamodb_lambda: lambda_python.PythonFunction = (
-            lambda_python.PythonFunction(
+        item_table.add_local_secondary_index(
+            index_name="name-lsi",
+            sort_key=dynamodb.Attribute(
+                name="name", type=dynamodb.AttributeType.STRING
+            ),
+        )
+
+        pokeapi_to_dynamodb_lambda: _lambda.DockerImageFunction = (
+            _lambda.DockerImageFunction(
                 self,
-                "PokeapiToDynamodbFunction",
-                entry=str(
-                    self.config.root_dir
-                    / "lambdas"
-                    / "data_ingestion"
-                    / "pokeapi_to_dynamodb"
+                "PokeapiToDynamodbFunctionDocker",
+                code=_lambda.DockerImageCode.from_image_asset(
+                    directory=str(
+                        self.config.root_dir
+                        / "lambdas"
+                        / "data_ingestion"
+                        / "pokeapi_to_dynamodb"
+                    )
                 ),
-                index="index.py",
-                handler="lambda_handler",
-                runtime=lambda_.Runtime.PYTHON_3_10,
                 environment={
                     "DATA_BUCKET": self.landing_bucket.bucket_name,
                     "DATA_KEY_BASE": self.config.api.pokeapi_data_s3_key,
                     "TABLE_NAME_CATEGORY": category_table.table_name,
                     "TABLE_NAME_ITEMS": item_table.table_name,
                 },
-                timeout=Duration.minutes(1),
+                timeout=Duration.minutes(5),
             )
         )
 
         self.landing_bucket.grant_read(pokeapi_to_dynamodb_lambda)
+        category_table.grant_write_data(pokeapi_to_dynamodb_lambda)
+        item_table.grant_write_data(pokeapi_to_dynamodb_lambda)
+
+        populate_dynamodb_task: sfn_tasks.LambdaInvoke = sfn_tasks.LambdaInvoke(
+            self,
+            "InvokeLambdaSfnTask",
+            lambda_function=pokeapi_to_dynamodb_lambda,
+            payload=sfn.TaskInput.from_object({}),
+        )
+
+        return populate_dynamodb_task
 
     def build_state_machine(self) -> sfn.StateMachine:
         """Build state machine"""
